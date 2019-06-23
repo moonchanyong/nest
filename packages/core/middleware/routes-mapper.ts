@@ -25,23 +25,14 @@ export class RoutesMapper {
       ];
     }
     const routePath: string = Reflect.getMetadata(PATH_METADATA, route);
-    if (this.isRouteInfo(routePath, route)) {
-      return [
-        {
-          path: this.validateRoutePath(route.path),
-          method: route.method,
-        },
-      ];
-    }
-    const paths = this.routerExplorer.scanForPaths(
-      Object.create(route),
-      route.prototype,
-    );
-    const concatPaths = <T>(acc: T[], currentValue: T[]) => acc.concat(currentValue);
-    return paths.map(item => item.path && item.path.map(p => ({
-      path: this.validateGlobalPath(routePath) + this.validateRoutePath(p),
-      method: item.requestMethod,
-    }))).reduce(concatPaths, []);
+    const isRouteInfo: boolean = this.isRouteInfo(routePath, route);
+
+    return [
+      {
+        path: this.validateRoutePath(isRouteInfo ? (route as RouteInfo).path : routePath),
+        method: isRouteInfo ? (route as RouteInfo).method : RequestMethod.ALL,
+      },
+    ];
   }
 
   private isRouteInfo(

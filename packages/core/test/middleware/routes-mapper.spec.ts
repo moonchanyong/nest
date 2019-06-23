@@ -29,9 +29,9 @@ describe('RoutesMapper', () => {
     expect(mapper.mapRouteToRouteInfo(config.forRoutes[0])).to.deep.equal([
       { path: '/test', method: RequestMethod.GET },
     ]);
+
     expect(mapper.mapRouteToRouteInfo(config.forRoutes[1])).to.deep.equal([
-      { path: '/test/test', method: RequestMethod.GET },
-      { path: '/test/another', method: RequestMethod.DELETE },
+      { path: '/test', method: RequestMethod.ALL },
     ]);
   });
 });
